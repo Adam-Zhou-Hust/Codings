@@ -51,7 +51,7 @@ void print() {
 	}
 }
 
-int main(int argc, char *argv) {
+int main(int argc, char *argv[]) {
 	int a, b;
 	cin >> n;
 	string s1, s2;
