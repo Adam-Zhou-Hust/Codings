@@ -8,6 +8,7 @@
 using namespace std;
 
 // 注意题目要求，不区分大小写
+// 本代码并没有去除标点符号，要去除标点符号，直接改即可
 
 class Dictionary {
 public:
@@ -37,9 +38,10 @@ Dictionary::Dictionary(istream& is) {
 void Dictionary::Print(void) const {
 	int count = 0;
 	for_each(wordSet.begin(), wordSet.end(), [&count](const string& word) {
+		cout << word << ' ';
+		count++;
 		if (!(count % MOD))
 			cout << endl;
-		cout << word << ' ';
 	});
 }
 
