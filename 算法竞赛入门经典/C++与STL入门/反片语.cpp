@@ -23,11 +23,11 @@ Solution::Solution() {
 	string word;
 	while (cin >> word) {
 		wordSet.push_back(word);
-		if (cnt.find(uniform(word)) == cnt.end()) {
-			cnt[uniform(word)] = 0;
-		}
-		cnt[uniform(word)]++;
+//		if (cnt.find(uniform(word)) == cnt.end()) {
+//			cnt[uniform(word)] = 0;
+//		}
 //		cnt[uniform(word)]++;
+		cnt[uniform(word)]++;
 	}
 }
 
