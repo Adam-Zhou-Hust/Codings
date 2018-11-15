@@ -6,6 +6,8 @@
 #include <cassert>
 using namespace std;
 
+// 先用笨方法试一下
+
 class setStack {
 private:
 	stack<set<string>> stk;
