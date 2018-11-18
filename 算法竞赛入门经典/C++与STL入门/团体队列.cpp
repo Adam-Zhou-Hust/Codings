@@ -33,7 +33,32 @@ public:
 	void enqueue(int idx, int num);
 	int dequeue();
 private:
-	vector<deque> teamMembers;
+	vector<deque<int>> teamMembers;
 	set<int> teamMap;
 	deque<int> teamOrder;
 };
+
+TeamStructure::TeamStructure(int n) : teamMembers(n, deque<int> ()) { }
+
+void TeamStructure::enqueue(int idx, int num) {
+	// idx为所在团队编号，num为自身的编号
+	teamMembers[idx - 1].push_back(num);
+	// 查看之前总队列中是否存在此队列，如果不存在，则添加到总队列的尾部
+	if (teamMap.find(idx - 1) == teamMap.end()) {
+		teamOrder.push_back(idx - 1);
+		teamMap.insert(idx - 1);
+	}
+}
+
+int TeamStructure::dequeue() {
+	assert(!teamOrder.empty());
+	int idx = teamOrder.front();
+	assert(!teamMembers[idx].empty());
+	int num = teamMembers[idx].front();
+	teamMembers[idx].pop_front();
+	if (teamMembers[idx].empty()) {
+		teamMap.erase(idx);
+		teamOrder.pop_front();
+	}
+	return num;
+}
