@@ -10,6 +10,9 @@ public:
 };
 
 bool Solution::isDeformation(const string &str1, const string &str2) {
+    if (str1.size() != str2.size()) {
+        return false;
+    }
     int arr[256] = {0};
 //  int arr2[256] = {0};
     for (int i = 0; i < str1.size(); i++) {
