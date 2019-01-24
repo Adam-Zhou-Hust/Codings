@@ -39,17 +39,17 @@ long long Solution::getSum(const string &str) {
         int j = i - 1;
         while (j >= 0 && pstr[j] == '-') 
             j--;
+        // 判断符号
+        int sign = 1;
+        if ((i - j - 1) % 2) {
+            sign = -1;
+        } 
         // 找全本次第一个数字开始的数字字符串，并求和
         while (i < length && isdigit(pstr[i])) {
             var = var * 10 + (pstr[i] - '0');
             i++;
         }
-        // 判断符号
-        if ((i - (j + 1)) % 2) {
-            sum -= var;
-        } else {
-            sum += var;
-        }
+        sum += sign * var;
     }
     return sum;
 }
