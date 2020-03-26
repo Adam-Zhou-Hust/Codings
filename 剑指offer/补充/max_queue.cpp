@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 #include <queue>
+#include <cassert>
+#include <deque>
 using namespace std;
 
 /**
@@ -29,9 +31,35 @@ using namespace std;
 
 class MaxQueue {
 public:
-    MaxQueue();
-    int max_value();
-    void push_back(int value);
-    int pop_front();
+	MaxQueue();
+	int max_value();
+	void push_back(int value);
+	int pop_front();
+private:
+	queue<int> q;
+	deque<int> help;
 };
 
+MaxQueue::MaxQueue() {}
+
+int MaxQueue::max_value() {
+	assert(!q.empty());
+	assert(!help.empty());
+	return help.front();
+}
+
+void MaxQueue::push_back(int value) {
+	while (!help.empty() && help.back() < value)
+		help.pop_back();
+	q.push(value);
+	help.push_back(value);
+}
+
+int MaxQueue::pop_front() {
+	assert(!q.empty());
+	int ret = q.front();
+	q.pop();
+	if (ret == help.front())
+		help.pop_front();
+	return ret;
+}
