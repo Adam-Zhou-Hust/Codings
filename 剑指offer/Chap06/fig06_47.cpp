@@ -32,6 +32,29 @@ int add(int num1, int num2) {
 	return sum;
 }
 
+// 2021.02.14 
+// 今日刷题，又看到这道题，现在需要考虑的是(temp & carray) << 1
+// 这一步是可能溢出的，比如temp是-1（补码表现形式为11111111...111）carray为1
+// 那么左移导致溢出，导致runtime error
+// 应该先将temp * carray强制类型转换为unsigned int，再参与左移运算
+// 同时把代码精简一下
+//
+// 注意算法的核心思想：
+// 1.异或能得到不带进位的加法的结果
+// 2.按位与然后左移1位得到进位结果
+// 3.重复上述迭代过程，直到进位为0（不产生进位）
+int add2(int a, int b) {
+    if (a == 0 || b == 0)
+        return a == 0 ? b : a;
+    while (b != 0) {  // 这里把b当成一个记录进位的变量，a当成记录最终结果的变量
+        int tmp = static_cast<unsigned int>(a & b) << 1;
+        a = a ^ b;
+        b = tmp;
+    }
+    return a;
+}
+
+
 int main(void) {
 	int a, b;
 	while (cin >> a >> b) {

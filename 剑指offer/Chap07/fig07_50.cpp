@@ -140,6 +140,72 @@ TreeNode *findCommon(TreeNode *root, TreeNode *node1, TreeNode *node2) {
 	return common;
 }
 
+// 2021.02.14
+// 以上写法非常不简洁，今日又刷到，给出上述方法的简化代码版本
+// 同时给出另一种递归思路版本
+class Solution2 {
+public:
+    TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q);
+private:
+    void findPath(TreeNode *root, TreeNode *targetA,TreeNode *targetB,
+                            vector<TreeNode *> &currPath,
+                            vector<TreeNode *> &pathA,
+                            vector<TreeNode *> &pathB);
+};
+
+// 基本思路：找到从根结点到两个节点的路径，并将路径上的节点分别保存下来(比如用vector保存)
+// 同时遍历路径，找到最后一个路径上的相同节点即为最近公共祖先
+TreeNode *Solution2::lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
+    vector<TreeNode *> pathA, pathB, currPath;
+    findPath(root, p, q, currPath, pathA, pathB);
+    int i = 0;
+    for (; i < pathA.size() && i < pathB.size(); i++) {
+        if (pathA[i] != pathB[i]) break;
+    }
+    return pathA[i-1];
+}
+
+// 递归回溯，找到从根结点到目标节点的路径(先根遍历，如果找到直接返回，相当于剪枝)
+void Solution2::findPath(TreeNode *root,
+                        TreeNode *targetA,
+                        TreeNode *targetB,
+                        vector<TreeNode *> &currPath,
+                        vector<TreeNode *> &pathA,
+                        vector<TreeNode *> &pathB) {
+    if (root == nullptr) return;
+    currPath.push_back(root);
+    if (root == targetA) pathA = currPath;
+    if (root == targetB) pathB = currPath;
+    findPath(root->left, targetA, targetB, currPath, pathA, pathB);
+    findPath(root->right, targetA, targetB, currPath, pathA, pathB);
+    currPath.pop_back();
+}
+
+// 另一种递归方法
+TreeNode *lowestCommonAncestor(TreeNode *root, TreeNode *p, TreeNode *q) {
+    if (root == nullptr) {
+        return nullptr;
+    }
+    if (root == p || root == q) {
+        return root;
+    }
+    TreeNode *left = lowestCommonAncestor(root->left, p, q);
+    TreeNode *right = lowestCommonAncestor(root->right, p, q);
+    if (left != nullptr && right != nullptr) {
+        // p q 一个在左，一个在右
+        return root;
+    }
+    if (left != nullptr) {
+        // p q 都在左子树
+        return left;
+    }
+    if (right != nullptr) {
+        // p q 都在右子树
+        return right;
+    }
+    return nullptr;
+}
+
 int main(void) {
 	TreeNode *root = createTree();
 	TreeNode *node1 = root->left->left->left;
